@@ -3,19 +3,41 @@ require('dotenv').config();
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
-
+const helmet      = require('helmet');
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
 const app = express();
 
+console.log('Current environment:', process.env.NODE_ENV);
+
 app.use('/public', express.static(process.cwd() + '/public'));
-
 app.use(cors({origin: '*'})); //For FCC testing purposes only
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Helmet middleware for security
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    }
+  },
+  // Other Helmet configurations...
+  referrerPolicy: {
+    policy: 'strict-origin-when-cross-origin'
+  },
+  noSniff: true,
+  xssFilter: true,
+  hidePoweredBy: true,
+  frameguard: {
+    action: 'sameorigin'
+  }
+}));
 
 //Index page (static HTML)
 app.route('/')
