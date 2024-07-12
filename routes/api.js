@@ -22,15 +22,17 @@ module.exports = function (app) {
             const data = await response.json();
             const { symbol: stockSymbol, latestPrice: price } = data;
             
-            if (like === 'true' && (!likes[stockSymbol] || !likes[stockSymbol].includes(clientIP))) {
+            if (like === 'true') {
               likes[stockSymbol] = likes[stockSymbol] || [];
-              likes[stockSymbol].push(clientIP);
+              if (!likes[stockSymbol].includes(clientIP)) {
+                likes[stockSymbol].push(clientIP);
+              }
             }
             
             return { 
               stock: stockSymbol, 
               price, 
-              likes: likes[stockSymbol] ? likes[stockSymbol].length : 0 
+              likes: (likes[stockSymbol] || []).length
             };
           }));
 
@@ -50,16 +52,18 @@ module.exports = function (app) {
           const data = await response.json();
           const { symbol, latestPrice: price } = data;
           
-          if (like === 'true' && (!likes[symbol] || !likes[symbol].includes(clientIP))) {
+          if (like === 'true') {
             likes[symbol] = likes[symbol] || [];
-            likes[symbol].push(clientIP);
+            if (!likes[symbol].includes(clientIP)) {
+              likes[symbol].push(clientIP);
+            }
           }
           
           res.json({
             stockData: {
               stock: symbol,
               price,
-              likes: likes[symbol] ? likes[symbol].length : 0
+              likes: (likes[symbol] || []).length
             }
           });
         }
