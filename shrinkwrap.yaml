@@ -1,4 +1,5 @@
 dependencies:
+  axios: 1.7.2
   body-parser: 1.20.2
   chai: 4.4.1
   chai-http: 4.4.0
@@ -54,6 +55,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
+  /axios/1.7.2:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    dev: false
+    resolution:
+      integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
   /balanced-match/1.0.2:
     dev: false
     resolution:
@@ -411,6 +420,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==
+  /follow-redirects/1.15.6:
+    dev: false
+    engines:
+      node: '>=4.0'
+    resolution:
+      integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
   /form-data/4.0.0:
     dependencies:
       asynckit: 0.4.0
@@ -860,6 +875,10 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==
+  /proxy-from-env/1.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
   /qs/6.11.0:
     dependencies:
       side-channel: 1.0.6
@@ -1062,6 +1081,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  axios: ^1.7.2
   body-parser: ^1.15.2
   chai: ^4.2.0
   chai-http: ^4.3.0
