@@ -1,60 +1,66 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Checker</title>
-    <link
-      id="favicon"
-      rel="icon"
-      href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png"
-      type="image/x-icon"
-    />
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./public/style.css" />
-  </head>
-  <body>
-    <header>
-      <h1>ISQA_5 - Nasdaq Stock Price Checker</h1>
-    </header>
-    <div id="userstories">
-      <h3>Example usage:</h3>
-      <code>/api/stock-prices?stock=GOOG</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;like=true</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;stock=MSFT</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;stock=MSFT&amp;like=true</code>
-      <br />
-      <h3>Example return:</h3>
-      <code>{"stockData":{"stock":"GOOG","price":786.90,"likes":1}}</code>
-      <br />
-      <code>
-        {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
-      </code>
-    </div>
-    <hr class="p-50" />
-    <div id="testui">
-      <h2 class="text-align-left">Front-End:</h2>
-      <h3>Get single price and total likes</h3>
-      <form id="testForm2" class="border">
-        <input type="text" name="stock" placeholder="GOOG" required="" />
-        <input type="checkbox" name="like" value="true" /> Like?
-        <br />
-        <button type="submit">Get Price!</button>
-      </form>
-      <h3>Compare and get relative likes</h3>
-      <form id="testForm" class="border">
-        <input type="text" name="stock" placeholder="GOOG" required="" />
-        <input type="text" name="stock" placeholder="MSFT" required="" />
-        <input type="checkbox" name="like" value="true" /> Like both?
-        <br />
-        <button type="submit">Get Price!</button>
-      </form>
-      <code id="jsonResult"></code>
-    </div>
-    <hr class="m-50 mt-200" />
-    <script src="/public/script.js"></script>
-  </body>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        form { margin-bottom: 20px; }
+        input, button { margin: 5px; padding: 5px; }
+        #result { background-color: #f0f0f0; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Urucs Stock Price Checker</h1>
+    <form id="stock-form">
+        <input type="text" id="stock1" placeholder="Enter stock symbol" required>
+        <input type="text" id="stock2" placeholder="Enter second stock symbol (optional)">
+        <input type="checkbox" id="like"> <label for="like">Like</label>
+        <button type="submit">Check Stock(s)</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('stock-form').onsubmit = function(e) {
+            e.preventDefault();
+            const stock1 = document.getElementById('stock1').value.toUpperCase();
+            const stock2 = document.getElementById('stock2').value.toUpperCase();
+            const like = document.getElementById('like').checked;
+            
+            let url = `/api/stock-prices?stock=${stock1}`;
+            if (stock2) url += `&stock=${stock2}`;
+            if (like) url += '&like=true';
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let resultHtml = '<h2>Results:</h2>';
+                    if (Array.isArray(data.stockData)) {
+                        data.stockData.forEach(stock => {
+                            resultHtml += `
+                                <div>
+                                    <h3>${stock.stock}</h3>
+                                    <p>Price: $${stock.price}</p>
+                                    <p>Relative Likes: ${stock.rel_likes}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        resultHtml += `
+                            <div>
+                                <h3>${data.stockData.stock}</h3>
+                                <p>Price: $${data.stockData.price}</p>
+                                <p>Likes: ${data.stockData.likes}</p>
+                            </div>
+                        `;
+                    }
+                    document.getElementById('result').innerHTML = resultHtml;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = `<p>Error: ${error.message}</p>`;
+                });
+        };
+    </script>
+</body>
 </html>
